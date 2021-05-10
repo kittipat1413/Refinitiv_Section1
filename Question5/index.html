@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="mainContainer"></div>
+    <button onclick="showDialog()">Show dialog</button>
+    <a style='margin-left: 20px; ' href="http://codequiz.azurewebsites.net/memleak">http://codequiz.azurewebsites.net/memleak</a>
+</body>
+
+
+<script>
+function showDialog() {
+    const newDialog = document.createElement('div');
+    newDialog.style.border = 'solid 1px black';
+    newDialog.style.position = 'absolute';
+    newDialog.style.width = '100%';
+    newDialog.style.height = '100%';
+    newDialog.style.top = '0px';
+    newDialog.style.background = 'white';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.id = 'closeBtn';
+    const dialogText = document.createElement('div');
+    newDialog.appendChild(closeBtn);
+    newDialog.appendChild(dialogText);
+    dialogText.innerText = 'This is a dialog';
+    closeBtn.innerText = 'Close';
+
+    //do not remove this part, it is for the ease of leak identification
+    const tmp = []; 
+    for(let i = 1; i < 5000000; i++) {
+        tmp.push(i);
+    }
+    closeBtn.tmp = tmp;
+    //end
+    document.body.appendChild(newDialog);
+}
+// Here is the root cause of memory leak
+document.addEventListener('click', function (e) {
+    if (event.target.id === 'closeBtn') {
+        console.log(event.target.tagName)
+        const mainContainer = document.getElementsByTagName('DIV');
+        mainContainer[1].parentElement.removeChild(mainContainer[1]);            
+    }
+});
+</script>
+
+</html>

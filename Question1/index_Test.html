@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <a id='Q1'>Question1</a>
+    <button onclick="changeWord()">CLICK</button>
+</body>
+
+
+<script>
+// javascript here or in index.js
+function changeWord() {
+document.getElementById('Q1').innerHTML = 'Hello'
+}
+
+async function thisIsSyncFunction() {
+       
+    let url = 'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits';
+    let response = await fetch(url);
+
+    let commits = await response.json(); // read response body and parse as JSON
+                
+    console.log(commits[0].author.id)
+    return commits[0].author.id;
+}
+ 
+const id = thisIsSyncFunction()
+
+console.log(id) // Promise { <pending> }
+id.then(function(result) {
+   console.log(result) // "Some User token"
+});
+
+</script>
+
+</html>

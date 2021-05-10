@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <a id='Q1'>Question1</a>
+    <p id="ans"></p>
+</body>
+
+
+<script>
+
+function ShowAns(ans) {
+  document.getElementById("ans").innerHTML = `Ans : ${ans}`;  
+}
+
+function thisIsSyncFunction() {
+    return fetch('./data.json').then(res => res.json()).then((response) =>  
+    {
+        let result = response.data;
+        return result;
+    });    
+}
+ 
+const number1 = thisIsSyncFunction()
+number1.then(function(result) {
+    const calculation = result * 10;
+    console.log(calculation);
+    ShowAns(calculation);
+});
+
+
+
+</script>
+
+</html>
